@@ -72,7 +72,9 @@ interface Square {
 //  可以发现拼写错误
 interface SquareConfig {
     color?: string,
-    width?: number
+    width?: number,
+    //  索引前缀
+    [propName: string]: any
 }
 function createSquare(config: SquareConfig): Square {
     let newSquare = {color: 'red', area: 100};
@@ -84,6 +86,7 @@ function createSquare(config: SquareConfig): Square {
     }
     return newSquare;
 }
+//  ts对对象字面量有检查，可以利用索引签名和对象跳过这个检查
 let mySquare = createSquare({
 });
 //  当变量用const，当属性用readonly
@@ -95,3 +98,168 @@ interface Point {
 let p1: Point = {x: 10, y: 20};
 let a: number[] = [1, 2, 3, 4];
 let ro: ReadonlyArray<number> = a;
+
+//  函数类型接口
+interface SearchFunc {
+    (source: string, subString: string): boolean
+}
+
+let mySearch: SearchFunc;
+mySearch = function (source: string, subString: string): boolean {
+    let result = source.search(subString);
+    return result > -1;
+}
+
+//  数组类型接口(索引签名)
+interface StringArray {
+    [index: number]: string
+}
+
+let myArray: StringArray;
+
+myArray = ['Bob', 'Fred'];
+
+let myStr: string = myArray[0];
+
+class Animal {
+    name: string
+}
+
+class Dog extends Animal {
+    bread: string
+}
+
+//  数字索引类型返回值是字符串索引类型返回值的子类型
+
+// interface NotOkay {
+//     [x: number]: Animal,
+//     [x: string]: Dog
+// }
+
+interface NotOkay {
+    [x: number]: Dog,
+    [x: string]: Animal
+}
+
+interface NumberDictionaray {
+    [index: string]: number,
+    length: number,
+    //  string不能赋给字符串索引类型Number
+    // name: string
+}
+
+interface ReadonlyStringArray {
+    readonly [index: number]: string;
+}
+
+let myArray1: ReadonlyStringArray = ['a', 'b'];
+
+//  接口定义类
+//  这是对类的实例部分做类型检查，constructor是静态部分，不做检查
+interface ClockInterface {
+    currentTime: Date,
+    setTime(d: Date): void
+}
+
+interface ClockConstructor {
+    new(hour: number, minute: number)
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date
+
+    constructor (h: number, m: number) {}
+
+    setTime (d: Date) {
+        this.currentTime = d;
+    }
+}
+
+// class Clock1 implements ClockConstructor {
+//     constructor (hour: number, minute: number) {}
+// }
+
+interface ClockInterface1 {
+    tick(): void
+}
+
+//  接口定义构造函数
+interface ClockConstructor1 {
+    new(hour: number, minute: number)
+}
+
+function createClock(ctor: ClockConstructor1, h: number, m: number): ClockInterface1 {
+    return new ctor(h, m);
+}
+
+class DigitalClock1 implements ClockInterface1 {
+    constructor(h: number, m: number) {}
+
+    tick() {}
+}
+
+class AnalogClock1 implements ClockInterface1 {
+    constructor(h: number, m: number) {}
+
+    tick() {}
+}
+
+let digital = createClock(DigitalClock1, 12, 1);
+let analog1 = createClock(AnalogClock1, 12, 1);
+
+// 接口的相互继承
+interface Shape {
+    color: string
+}
+
+interface PenStroke {
+    penWidth: number
+}
+
+interface Square1 extends Shape, PenStroke {
+    sideLength: number
+}
+let square: Square1;
+square.color = 'a';
+square.sideLength = 2;
+square.penWidth = 3;
+
+//  混合类型
+//  既可以是函数，也可以是对象
+interface Counter {
+    (start: number): string,
+    interval: number,
+    reset(): void
+}
+
+function getCounter(): Counter {
+    let counter = <Counter>(function (s: number): string{ return a + ''});
+    counter.interval = 123;
+    counter.reset = () => {};
+    return counter;
+}
+
+//  接口继承类
+class Control {
+    private state: any
+}
+
+interface SelectableControl extends Control {
+    select(): void
+}
+
+class Button extends Control implements SelectableControl {
+    select(): void {
+    }
+}
+
+class Button1 extends Control {
+    select(): void {
+    }
+}
+
+//  Button2没有继承Control就去实现SelectableControl，会缺少state属性
+// class Button2 implements SelectableControl {
+//     select(): void {
+//     }
+// }
