@@ -326,3 +326,72 @@ class Horse extends Animal1 {
 const dog = new Dog1('a');
 dog.bark();
 dog.move(10);
+
+//  类型兼容
+class Animal3 {
+    private name: string;
+
+    constructor (name: string) {
+        this.name = name;
+    }
+}
+
+class Rhing extends Animal3 {
+    constructor () {
+        super('a');
+    }
+}
+
+class Employy {
+    private name: string;
+    constructor (name: string) {
+        this.name = name;
+    }
+}
+
+let animal3 = new Animal3('a');
+let rhino = new Rhing();
+let employee = new Employy('c');
+animal3 = rhino;
+//  私有成员来源不一样，不兼容
+//   animal3= employee;
+
+//  protected在子类无法访问
+
+class Person {
+    protected name: string;
+
+    constructor (name: string) {
+        this.name = name;
+    }
+}
+
+class Employee extends Person {
+    private department: string
+    
+    constructor(name: string, department: string) {
+        super(name);
+        this.department = department;
+    }
+
+    getElevatorPitch () {
+        return `Hello ${this.name}`
+    }
+}
+
+let howard = new Employee('Howard', 'a');
+howard.getElevatorPitch();
+//  protected只能在子类使用，不能在外面使用
+// howard.name;
+
+class Person1 {
+    readonly name: string;
+
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+
+let john = new Person1('john');
+//  name是只读属性
+// john.name = '';
