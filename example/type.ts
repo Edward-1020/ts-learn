@@ -395,3 +395,43 @@ class Person1 {
 let john = new Person1('john');
 //  name是只读属性
 // john.name = '';
+
+let password = '123';
+
+class Employee1 {
+    private _fullName: string;
+
+    get fullName():string {
+        return this._fullName;
+    }
+
+    set fullName(newName: string) {
+        if (password && password === '123') {
+            this._fullName = newName;
+        } else {
+            console.log('error');
+        }
+    }
+}
+
+//  静态属性
+class Grid {
+    static origin = {
+        x: 0,
+        y: 0
+    }
+
+    scale: number;
+    constructor (scale: number) {
+        this.scale = scale;
+    }
+
+    calculateDistanceFromOrigin(point: {x: number; y: number}) {
+        let xDist = point.x - Grid.origin.x;
+        let yDist = point.y - Grid.origin.y;
+        return Math.sqrt(xDist * xDist + yDist * yDist) * this.scale;
+    }
+}
+
+let grid1 = new Grid(1);
+let grid2 = new Grid(2);
