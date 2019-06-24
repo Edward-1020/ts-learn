@@ -263,3 +263,66 @@ class Button1 extends Control {
 //     select(): void {
 //     }
 // }
+
+class Greeter {
+    greeting: string
+
+    constructor (message: string) {
+        this.greeting = message;
+    }
+
+    greet () {
+        return 'Hello, ' + this.greeting;
+    }
+}
+
+let greeter1 = new Greeter('world');
+greeter1.greet();
+
+class Animal1 {
+    name: string;
+
+    constructor (name: string) {
+        this.name = name;
+    }
+
+    move (distance: number = 0) {
+        console.log(`${this.name} moved ${distance}`);
+    }
+}
+
+class Dog1 extends Animal1 {
+    constructor(name: string) {
+        super(name);
+    }
+
+    bark () {
+        console.log('a')
+    }
+}
+
+class Snake extends Animal1 {
+    constructor(name: string) {
+        super(name);
+    }
+
+    move (distance: number = 0) {
+        console.log(`Slithering....`);
+        super.move(distance);
+    }
+}
+
+class Horse extends Animal1 {
+    constructor (name: string) {
+        super(name);
+    }
+
+    move (distance: number = 0) {
+        console.log(`Galloping....`);
+        super.move(distance);
+    }
+}
+
+const dog = new Dog1('a');
+dog.bark();
+dog.move(10);
