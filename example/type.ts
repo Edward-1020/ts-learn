@@ -489,3 +489,14 @@ interface Point3d extends Point1 {
 }
 
 let ponit3d: Point3d = {x1: 1, y1: 2, z1: 3};
+
+(function () {
+    function add (x: number, y: number): number {
+        return x + y;
+    }
+
+    //  函数类型
+    let myAdd: (baseValue: number, increment: number) => number = function (x: number, y:number): number {
+        return x + y;
+    }
+})()
