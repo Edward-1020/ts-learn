@@ -499,4 +499,78 @@ let ponit3d: Point3d = {x1: 1, y1: 2, z1: 3};
     let myAdd: (baseValue: number, increment: number) => number = function (x: number, y:number): number {
         return x + y;
     }
-})()
+
+    function buildName (firstName: string, lastName?: string): string {
+        if (lastName) {
+            return firstName + '' + lastName;
+        } else {
+            return firstName;
+        }
+    }
+
+    function buildName1 (firstName: string, ...restOfName: string[]): string {
+        return firstName + ' ' + restOfName.join(''); 
+    }
+
+    let buildNameFn: (fname: string, ...rest: string[]) => string = buildName1;
+
+})();
+
+//  this与类型，在参数中指定this类型
+(function () {
+    interface Card {
+        suit: string,
+        card: number
+    }
+    
+    interface Deck {
+        suits: string[]
+        cards: number[]
+        createCardPicker(): () => Card
+    }
+
+    let deck: Deck = {
+        suits: ['hearts', 'spades', 'clubs', 'diamonds'],
+        cards: Array(52),
+        createCardPicker: function (this: Deck) {
+            return () => {
+                let pickedCard = Math.floor(Math.random() * 52);
+                let pickedSuit = Math.floor(pickedCard / 13);
+
+                return {
+                    //  this不能推断类型
+                    suit: this.suits[pickedSuit],
+                    card: pickedCard % 13
+                }
+            }
+        }
+    }
+    let cardPicked = deck.createCardPicker();
+    let pickedCard = cardPicked();
+    
+    //  箭头函数解决this的约定问题
+    interface UIElement {
+        addClickListener(onClick: (this:void, e:Event) => void): void;
+    }
+    
+    class Handler1 {
+        type: string;
+    
+        onClickBad = (e: Event) => {
+            this.type = e.type;
+        }
+    }
+    let h = new Handler1();
+
+    //  重载
+    function pick (x: {suit: string; card: number}[]): void;
+    function pick (x: number): void;
+    //  重载函数实现
+    function pick (x): any {
+        if (Array.isArray(x)) {
+            console.log(x);
+        } else {
+            console.log(x);
+        }
+    }
+})();
