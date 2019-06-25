@@ -435,3 +435,57 @@ class Grid {
 
 let grid1 = new Grid(1);
 let grid2 = new Grid(2);
+
+
+//  抽象类必须包含抽象方法
+abstract class Animal4 {
+    //  抽象方法只能在派生类实现
+    abstract makeSound(): void
+    moveBy(): void {
+        console.log('roaming the earth')
+    }
+}
+
+abstract class Department {
+    name: string;
+
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    printName(): void {
+        console.log(this.name);
+    }
+
+    abstract printMeeting(): void;
+}
+
+class AccountingDepartment extends Department {
+    constructor() {
+        super('aaa');
+    }
+
+    printMeeting(): void {
+        console.log('bbb')
+    }
+
+    generateReports(): void {
+        console.log('generating')
+    }
+}
+
+let department: Department;
+//  不可以实例抽象类
+// department = new Department();
+department = new AccountingDepartment();
+
+class Point1 {
+    x1: number
+    y1: number
+}
+
+interface Point3d extends Point1 {
+    z1: number
+}
+
+let ponit3d: Point3d = {x1: 1, y1: 2, z1: 3};
