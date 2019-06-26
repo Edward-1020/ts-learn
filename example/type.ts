@@ -658,3 +658,27 @@ let ponit3d: Point3d = {x1: 1, y1: 2, z1: 3};
     createInstance(Lion).keeper.nametag;
     createInstance(Bee).keeper.hasMask;
 })();
+
+(function () {
+    let x: (number|null)[] = [0, 1, null];
+
+
+    class Animal {
+        numLens: number
+    }
+
+    class Bee extends Animal {}
+
+    class Lion extends Animal {}
+
+    let zoo: Animal[] = [new Bee(), new Lion()]
+
+    //  根据上下文推断mouseEvent不会有clickTime属性
+    // window.onmousedown = function (mouseEvent) {
+    //     console.log(mouseEvent.clickTime);
+    // }
+
+    function createZoo(): Animal[] {
+        return [new Bee(), new Lion()];
+    }
+})();
