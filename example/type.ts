@@ -574,3 +574,23 @@ let ponit3d: Point3d = {x1: 1, y1: 2, z1: 3};
         }
     }
 })();
+
+(function () {
+    function identity<T>(arg: T): T {
+        return arg;
+    }
+    let output = identity<string>('myString');
+
+    function loggingIdentity<T>(arg: T[]): T[] {
+        console.log(arg.length);
+        return arg;
+    }
+
+    let myIdentity: <T>(arg: T) => T = identity;
+
+    interface GericIdentityFn<T> {
+        (arg: T): T
+    }
+
+    let myIdentity1: GericIdentityFn<string> = identity;
+})();
