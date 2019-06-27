@@ -710,3 +710,79 @@ let ponit3d: Point3d = {x1: 1, y1: 2, z1: 3};
 
     var jim = extend(new Person('jim'), new ConsoleLogger());
 })();
+
+(function () {
+    function padLeft(value: string, padding: string | number) {
+        if (typeof padding === 'number') {
+            return Array(padding + 1).join(' ') + value;
+        }
+        if (typeof padding === 'string') {
+            return padding + value;
+        }
+        throw new Error(`a`);
+    }
+
+    interface Bird {
+        fly();
+
+        layEggs();
+    }
+
+    interface Fish {
+        swim()
+
+        layEggs()
+    }
+
+    function getSmallPet(): Fish | Bird {
+        return <Fish | Bird>{};
+    }
+    let pet = getSmallPet();
+    if (isFish(pet)) {
+        pet.swim();
+    }
+    
+    //  类型保护
+    function isFish(pet: Fish | Bird): pet is Fish {
+        return (<Fish>pet).swim !== undefined;
+    }
+})();
+
+(function () {
+    function isNumber (x: any):x is number {
+        return typeof x === 'number';
+    }
+
+    function isString (x: any): x is string {
+        return typeof x === 'string';
+    }
+
+    function padLeft (value: string, padding: string | number) {
+        if (isNumber(padding)) {
+            return Array(padding + 1).join(' ') + value;
+        }
+        if (isString(padding)) {
+            return padding + value;
+        }
+        throw new Error('a');
+    }
+})();
+
+(function () {
+    class Fish {
+        swim(){}
+    }
+    class Bird {
+        fly(){}
+    }
+    function getRandomPet(): Fish | Bird {
+        return Math.random() > 0.5 ? new Bird() : new Fish();
+    }
+    let pet = getRandomPet();
+    if (pet instanceof Bird) {
+        pet.fly()
+    }
+    if (pet instanceof Fish) {
+        pet.swim()
+    }
+})();
