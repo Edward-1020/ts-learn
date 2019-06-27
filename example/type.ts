@@ -786,3 +786,45 @@ let ponit3d: Point3d = {x1: 1, y1: 2, z1: 3};
         pet.swim()
     }
 })();
+
+(function () {
+    //  null 不能赋值给undefined
+    function f (x: number, y?: number) {
+        return x + (y || 0);
+    }
+    f(1, 2);
+    f(1)
+    f(1, undefined)
+    //  不对
+    // f(1, null)
+
+    class C {
+        a: number
+        b?: number
+    }
+
+    function f1 (sn: string | null):string {
+        if (sn ===null) {
+            return 'default'
+        } else {
+            return sn;
+        }
+    }
+
+    function broken(name: string | null): string {
+        function postfix(epither: string) {
+            //!为类型断言
+            return name!.charAt(0) + ' .the' + epither;
+        }
+
+        name = name || 'Bob';
+        return postfix(name);
+    }
+
+    //  联合字面量
+    type Easing = 'ease-in' | 'ease-out' | 'ease-in-out'
+
+    function f2 (a: Easing) {
+
+    }
+})();
