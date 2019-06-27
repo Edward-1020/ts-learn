@@ -681,4 +681,32 @@ let ponit3d: Point3d = {x1: 1, y1: 2, z1: 3};
     function createZoo(): Animal[] {
         return [new Bee(), new Lion()];
     }
+
+    //  交叉类型
+    function extend<T, U>(first: T, second: U): T & U {
+        let result = <T & U>{};
+        for (let id in first) {
+            result[id] = <any>first[id];
+        }
+        for (let id in second) {
+            result[id] = <any>second[id];
+        }
+        return result;
+    }
+
+    class Person {
+        constructor(public name: string) {
+
+        }
+    }
+
+    interface Loggable {
+        log(): void
+    }
+
+    class ConsoleLogger implements Loggable {
+        log(){}
+    }
+
+    var jim = extend(new Person('jim'), new ConsoleLogger());
 })();
